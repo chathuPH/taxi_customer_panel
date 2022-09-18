@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {BrowserRouter, Route} from "react-router-dom";
+import { Redirect } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Navbar from "./components/navbar/Navbar";
@@ -11,6 +12,7 @@ import MyProfile from "./pages/myProfile/MyProfile"
 import Login from "./pages/login/Login"
 import register from "./pages/register/Register"
 
+const userId = window.sessionStorage.getItem("userID");
 
 ReactDOM.render(<BrowserRouter>
     <Navbar/>

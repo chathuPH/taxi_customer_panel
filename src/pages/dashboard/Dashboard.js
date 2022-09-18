@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.scss";
+import { Redirect } from "react-router-dom";
 
 const Dashboard = () => {
+  const userId = window.sessionStorage.getItem("userID");
+  if (userId===undefined || userId===null) {
+    return (<Redirect to="/" />)
+  }
+  
   return (
     <div className="container mt-5">
       <div className="row ">

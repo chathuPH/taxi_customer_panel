@@ -20,6 +20,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
+import { Redirect } from "react-router-dom";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -46,14 +47,15 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:5000/feedstock`,
+  baseURL: `http://localhost:8080/api/v1/booking`,
 });
 
-const ManageBookings=()=> {
+const ManageBookings = () => {
+
   var columns = [
     {
       title: "ID",
-      field: "_id",
+      field: "id",
       hidden: true,
       editable: "never",
       headerStyle: {
@@ -62,8 +64,62 @@ const ManageBookings=()=> {
       },
     },
     {
-      title: "DNO",
-      field: "DNO",
+      title: "Source",
+      field: "source",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Destination",
+      field: "destination",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Distance",
+      field: "distance",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Fee",
+      field: "fee",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Driver",
+      field: "driver.driverName",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Vehicle",
+      field: "vehicle.vehicleName",
+      editable: "never",
+      headerStyle: {
+        backgroundColor: "#00994d",
+        color: "#FFF",
+      },
+    },
+    {
+      title: "Status",
+      field: "status",
       editable: "never",
       headerStyle: {
         backgroundColor: "#00994d",
@@ -71,17 +127,31 @@ const ManageBookings=()=> {
       },
     },
   ];
+
+  
   const [data, setData] = useState([]); //table data
 
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const AddRow = (newData, resolve) => {};
+  const userId = window.sessionStorage.getItem("userID");
+ 
 
-  const UpdateRow = (newData, oldData, resolve) => {};
+  useEffect(() => {
+    api
+      .get("/findByCustomer?id="+userId)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log("Error");
+      });
+  }, []);
 
-  const DeleteRow = (oldData, resolve) => {};
+  if (userId===undefined || userId===null) {
+    return (<Redirect to="/" />)
+  }
 
   return (
     <div className="container mt-5">
@@ -107,20 +177,6 @@ const ManageBookings=()=> {
                 exportButton: true,
               }}
               icons={tableIcons}
-              editable={{
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve) => {
-                    UpdateRow(newData, oldData, resolve);
-                  }),
-                onRowAdd: (newData) =>
-                  new Promise((resolve) => {
-                    AddRow(newData, resolve);
-                  }),
-                onRowDelete: (oldData) =>
-                  new Promise((resolve) => {
-                    DeleteRow(oldData, resolve);
-                  }),
-              }}
             />
           </Grid>
           <Grid item xs={3}></Grid>
@@ -131,6 +187,6 @@ const ManageBookings=()=> {
       <br></br>
     </div>
   );
-}
+};
 
 export default ManageBookings;

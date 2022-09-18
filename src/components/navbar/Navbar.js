@@ -40,7 +40,7 @@ const Navbar=()=> {
                 <Link className="nav-link px-4" to="/profile">
                   Profile
                 </Link>
-                <Link className="nav-link px-4" to="/">
+                <Link className="nav-link px-4" to="/" onClick={()=>window.sessionStorage.removeItem("userID")}>
                   Logout
                 </Link>
               </div>

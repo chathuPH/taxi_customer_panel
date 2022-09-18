@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { withRouter, Redirect } from "react-router-dom";
-import { Container } from "reactstrap";
 import { Button, Modal, Row, Col, Form } from "react-bootstrap";
 
 import Alert from "@material-ui/lab/Alert";

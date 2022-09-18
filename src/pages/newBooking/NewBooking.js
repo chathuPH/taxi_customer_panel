@@ -5,7 +5,7 @@ import VehiclesDropdown from "../../components/vehiclesDropdown/VehiclesDropdown
 import BranchesDropdown from "../../components/branchesDropdown/BranchesDropdown";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { useHistory } from "react-router";
+import { useHistory,Redirect } from "react-router";
 
 const api = axios.create({
   baseURL: `http://localhost:8080/api/v1/booking`,
@@ -19,6 +19,7 @@ const NewBooking = () => {
   const [vehicleValue, setVehicleValue] = useState();
   const [sourceValue, setSourceValue] = useState();
   const [destinationValue, setDestinationValue] = useState();
+  const [distanceValue,setDistanceValue]=useState(0);
 
   const [calFee, setCalFee] = useState(0);
   const [data, setData] = useState([]);
@@ -28,16 +29,11 @@ const NewBooking = () => {
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    const value = e.target.value;
-    setData({
-      ...data,
-      [e.target.name]: value,
-    });
-    setIserror(false);
-    setErrorMessages([]);
-  };
+  if (userId===undefined || userId===null) {
+    return (<Redirect to="/" />)
+  }
+
+  
   const handleCategoryChange = (e) => {
     const Cvalue = e.Cid;
     setCategoryValue(Cvalue);
@@ -55,18 +51,19 @@ const NewBooking = () => {
     const value = e.target.value;
     const calFeeVal = value * 100;
     setCalFee(calFeeVal);
+    setDistanceValue(value)
     setIserror(false);
     setErrorMessages([]);
   };
 
   const handleSourceChange = (e) => {
-    const Svalue = e.Bid;
+    const Svalue = e.label;
     setSourceValue(Svalue);
     setIserror(false);
     setErrorMessages([]);
   };
   const handleDestinationChange = (e) => {
-    const Dvalue = e.Bid;
+    const Dvalue = e.label;
     setDestinationValue(Dvalue);
     setIserror(false);
     setErrorMessages([]);
@@ -80,6 +77,7 @@ const NewBooking = () => {
     copyData.fee = calFee;
     copyData.vehicle = vehicleValue;
     copyData.customer = userId;
+    copyData.distance=distanceValue;
 
     api
       .post("/create", copyData)
@@ -175,7 +173,6 @@ const NewBooking = () => {
             <Form.Control
               name="fee"
               type="text"
-              onChange={handleChange}
               value={calFee}
               required
               disabled

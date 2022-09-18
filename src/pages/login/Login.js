@@ -19,6 +19,8 @@ const api = axios.create({
 });
 
 const Login = () => {
+  const userId = window.sessionStorage.getItem("userID");
+
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -26,17 +28,21 @@ const Login = () => {
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
 
+  if (userId) {
+    return (<Redirect to="/dashboard" />)
+  }
+
   const onChangeUsername = (e) => {
     const userName = e.target.value;
     setUsername(userName);
-    setIserror(false)
-    setErrorMessages([])
+    setIserror(false);
+    setErrorMessages([]);
   };
   const onChangePassword = (e) => {
     const passWord = e.target.value;
     setPassword(passWord);
-    setIserror(false)
-    setErrorMessages([])
+    setIserror(false);
+    setErrorMessages([]);
   };
 
   const handleLogin = (e) => {
@@ -50,7 +56,7 @@ const Login = () => {
       .post("/login", loginData)
       .then((res) => {
         if (res.status === 202) {
-          window.sessionStorage.setItem('userID',res.data?.id );
+          window.sessionStorage.setItem("userID", res.data?.id);
           history.push({
             pathname: "/dashboard",
           });
@@ -58,8 +64,8 @@ const Login = () => {
       })
       .catch((error) => {
         console.log("Error");
-        setIserror(true)
-        setErrorMessages(["Login Failed"])
+        setIserror(true);
+        setErrorMessages(["Login Failed"]);
       });
   };
 
