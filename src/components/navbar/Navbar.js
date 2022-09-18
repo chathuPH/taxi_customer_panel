@@ -32,7 +32,7 @@ const Navbar=()=> {
 
                 <Link
                   className="nav-link px-4 navbar-brand mx-0 d-none d-md-inline text-light"
-                  to="/"
+                  to="/dashboard"
                 >
                   Admin Panel
                 </Link>
@@ -40,7 +40,7 @@ const Navbar=()=> {
                 <Link className="nav-link px-4" to="/profile">
                   Profile
                 </Link>
-                <Link className="nav-link px-4" to="/logout">
+                <Link className="nav-link px-4" to="/">
                   Logout
                 </Link>
               </div>
